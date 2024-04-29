@@ -29,21 +29,21 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/nikolai2111/STM32G474_Black-Pill_v3.0_Template"></a>
+  <a href="https://github.com/nikolai2111/STM32G474_Black-Pill_v3.0_LL-Template "></a>
 
-<h3 align="center">Black Pill v3.0 STM32G474 HAL-Template</h3>
+<h3 align="center">Black Pill v3.0 STM32G474 LL-Template</h3>
 
   <p align="center">
-    This is a small HAL template for the Black Pill v3.0 (STM32G474). It contains all files needed and additional file for the own libraries. It is desinged to use with the STMCubeIDE HAL-Library. 
+    This is a small LL template for the Black Pill v3.0 (STM32G474). It contains all files needed and additional file for the own libraries. It is desinged to use with the STMCubeIDE LL-Library. 
     <br />
-    <a href="https://github.com/nikolai2111/STM32G474_Black-Pill_v3.0_Template"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/nikolai2111/STM32G474_Black-Pill_v3.0_LL-Template "><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/nikolai2111/STM32G474_Black-Pill_v3.0_Template">View Demo</a>
+    <a href="https://github.com/nikolai2111/STM32G474_Black-Pill_v3.0_LL-Template ">View Demo</a>
     ·
-    <a href="https://github.com/nikolai2111/STM32G474_Black-Pill_v3.0_Template/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    <a href="https://github.com/nikolai2111/STM32G474_Black-Pill_v3.0_LL-Template /issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     ·
-    <a href="https://github.com/nikolai2111/STM32G474_Black-Pill_v3.0_Template/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+    <a href="https://github.com/nikolai2111/STM32G474_Black-Pill_v3.0_LL-Template /issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
   </p>
 </div>
 
@@ -108,7 +108,7 @@ Install STM32CubeIDE on your computer.
 ToDo:
 1. Clone the repo to your STM32CubeIDE workspace
    ```sh
-   git clone https://github.com/nikolai2111/STM32G474_Black-Pill_v3.0_Template.git
+   git clone https://github.com/nikolai2111/STM32G474_Black-Pill_v3.0_LL-Template .git
    ```
 2. Start STM32CubeIDE
 3. Import project into the STM32CubeIDE. `File` > `Import...` > `General` > `Existing Projects into workspace` and select with `Browse` the project folder. 
@@ -120,10 +120,10 @@ ToDo:
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] SW: Publish HAL template for this board (this repo).
+- [ ] SW: Publish LL template for this board (this repo).
 - [ ] SW: Add LL template for this board.
 
-See the [open issues](https://github.com/nikolai2111/STM32G474_Black-Pill_v3.0_Template/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/nikolai2111/STM32G474_Black-Pill_v3.0_LL-Template /issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -159,9 +159,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information. The l
 <!-- CONTACT -->
 ## Contact
 
-Nikolai Zoller - nikolai.zoller@hotmail.com
+Nikolai Zoller - [nikolai.zoller@hotmail.com](mailto:nikolai.zoller@hotmail.com)
 
-Project Link: [https://github.com/nikolai2111/STM32G474_Black-Pill_v3.0_Template](https://github.com/nikolai2111/STM32G474_Black-Pill_v3.0_Template)
+Project Link: [https://github.com/nikolai2111/STM32G474_Black-Pill_v3.0_LL-Template ](https://github.com/nikolai2111/STM32G474_Black-Pill_v3.0_LL-Template )
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -173,14 +173,14 @@ Source: [Best-README-Template](https://github.com/othneildrew/Best-README-Templa
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/nikolai2111/STM32G474_Black-Pill_v3.0_Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/nikolai2111/STM32G474_Black-Pill_v3.0_Template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/nikolai2111/STM32G474_Black-Pill_v3.0_Template.svg?style=for-the-badge
-[forks-url]: https://github.com/nikolai2111/STM32G474_Black-Pill_v3.0_Template/network/members
-[stars-shield]: https://img.shields.io/github/stars/nikolai2111/STM32G474_Black-Pill_v3.0_Template.svg?style=for-the-badge
-[stars-url]: https://github.com/nikolai2111/STM32G474_Black-Pill_v3.0_Template/stargazers
-[issues-shield]: https://img.shields.io/github/issues/nikolai2111/STM32G474_Black-Pill_v3.0_Template.svg?style=for-the-badge
-[issues-url]: https://github.com/nikolai2111/STM32G474_Black-Pill_v3.0_Template/issues
-[license-shield]: https://img.shields.io/github/license/nikolai2111/STM32G474_Black-Pill_v3.0_Template.svg?style=for-the-badge
-[license-url]: https://github.com/nikolai2111/STM32G474_Black-Pill_v3.0_Template/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/nikolai2111/STM32G474_Black-Pill_v3.0_LL-Template.svg?style=for-the-badge
+[contributors-url]: https://github.com/nikolai2111/STM32G474_Black-Pill_v3.0_LL-Template/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/nikolai2111/STM32G474_Black-Pill_v3.0_LL-Template.svg?style=for-the-badge
+[forks-url]: https://github.com/nikolai2111/STM32G474_Black-Pill_v3.0_LL-Template/network/members
+[stars-shield]: https://img.shields.io/github/stars/nikolai2111/STM32G474_Black-Pill_v3.0_LL-Template.svg?style=for-the-badge
+[stars-url]: https://github.com/nikolai2111/STM32G474_Black-Pill_v3.0_LL-Template/stargazers
+[issues-shield]: https://img.shields.io/github/issues/nikolai2111/STM32G474_Black-Pill_v3.0_LL-Template.svg?style=for-the-badge
+[issues-url]: https://github.com/nikolai2111/STM32G474_Black-Pill_v3.0_LL-Template/issues
+[license-shield]: https://img.shields.io/github/license/nikolai2111/STM32G474_Black-Pill_v3.0_LL-Template.svg?style=for-the-badge
+[license-url]: https://github.com/nikolai2111/STM32G474_Black-Pill_v3.0_LL-Template/blob/master/LICENSE.txt
 [cube-url]: https://www.st.com/en/development-tools/stm32cubeide.html
