@@ -18,12 +18,11 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "usb_device.h"
+#include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "usbd_cdc_if.h"
 #include "putchar_getchar_redirect.h"
 /* USER CODE END Includes */
 
@@ -66,51 +65,69 @@ void SystemClock_Config(void);
 int main(void)
 {
 
-  /* USER CODE BEGIN 1 */
+	/* USER CODE BEGIN 1 */
 
-  /* USER CODE END 1 */
+	/* USER CODE END 1 */
 
-  /* MCU Configuration--------------------------------------------------------*/
+	/* MCU Configuration--------------------------------------------------------*/
 
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+	/* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+	LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SYSCFG);
+	LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_PWR);
 
-  /* USER CODE BEGIN Init */
+	/* System interrupt init*/
+	NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
 
-  /* USER CODE END Init */
+	/* SysTick_IRQn interrupt configuration */
+	NVIC_SetPriority(SysTick_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 15, 0));
 
-  /* Configure the system clock */
-  SystemClock_Config();
+	/** Disable the internal Pull-Up in Dead Battery pins of UCPD peripheral
+	 */
+	LL_PWR_DisableUCPDDeadBattery();
 
-  /* USER CODE BEGIN SysInit */
+	/* USER CODE BEGIN Init */
 
-  /* USER CODE END SysInit */
+	/* USER CODE END Init */
 
-  /* Initialize all configured peripherals */
-  MX_GPIO_Init();
-  MX_USB_Device_Init();
-  /* USER CODE BEGIN 2 */
-  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
-  /* USER CODE END 2 */
+	/* Configure the system clock */
+	SystemClock_Config();
 
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
-  while(1)
-    {
-      GPIO_PinState state = HAL_GPIO_ReadPin(BTN_GPIO_Port, BTN_Pin);
-      HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, state);
+	/* USER CODE BEGIN SysInit */
+	/**
+	 * @note Disable internal buffering of the input stream to avoid unexpected
+	 * behavior with scanf(). Only need with scanf().
+	 */
+	setvbuf(stdin, NULL, _IONBF, 0);
+	/* USER CODE END SysInit */
 
-      if(state == GPIO_PIN_RESET)
+	/* Initialize all configured peripherals */
+	MX_GPIO_Init();
+	MX_LPUART1_UART_Init();
+	/* USER CODE BEGIN 2 */
+	LL_GPIO_SetOutputPin(LED_GPIO_Port, LED_Pin);
+	/* USER CODE END 2 */
+
+	/* Infinite loop */
+	/* USER CODE BEGIN WHILE */
+	while (1)
 	{
-	  printf("Button is pressed...\n\r");
+		if (LL_GPIO_IsInputPinSet(BTN_GPIO_Port, BTN_Pin))
+		{
+			LL_GPIO_SetOutputPin(LED_GPIO_Port, LED_Pin);
+		}
+		else
+		{
+			printf("Button is pressed...\n");
+
+			LL_GPIO_ResetOutputPin(LED_GPIO_Port, LED_Pin);
+		}
+
+		LL_mDelay(10);
+		/* USER CODE END WHILE */
+
+		/* USER CODE BEGIN 3 */
 	}
-
-      HAL_Delay(10);
-      /* USER CODE END WHILE */
-
-      /* USER CODE BEGIN 3 */
-    }
-  /* USER CODE END 3 */
+	/* USER CODE END 3 */
 }
 
 /**
@@ -119,46 +136,46 @@ int main(void)
  */
 void SystemClock_Config(void)
 {
-  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+	LL_FLASH_SetLatency(LL_FLASH_LATENCY_4);
+	while (LL_FLASH_GetLatency() != LL_FLASH_LATENCY_4)
+	{
+	}
+	LL_PWR_EnableRange1BoostMode();
+	LL_RCC_HSI_Enable();
+	/* Wait till HSI is ready */
+	while (LL_RCC_HSI_IsReady() != 1)
+	{
+	}
 
-  /** Configure the main internal regulator output voltage
-   */
-  HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1_BOOST);
+	LL_RCC_HSI_SetCalibTrimming(64);
+	LL_RCC_PLL_ConfigDomain_SYS(LL_RCC_PLLSOURCE_HSI, LL_RCC_PLLM_DIV_4, 85,
+			LL_RCC_PLLR_DIV_2);
+	LL_RCC_PLL_EnableDomain_SYS();
+	LL_RCC_PLL_Enable();
+	/* Wait till PLL is ready */
+	while (LL_RCC_PLL_IsReady() != 1)
+	{
+	}
 
-  /** Initializes the RCC Oscillators according to the specified parameters
-   * in the RCC_OscInitTypeDef structure.
-   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI
-      | RCC_OSCILLATORTYPE_HSI48;
-  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-  RCC_OscInitStruct.HSI48State = RCC_HSI48_ON;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLM = RCC_PLLM_DIV4;
-  RCC_OscInitStruct.PLL.PLLN = 85;
-  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-  RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
-  RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
-  if(HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-    {
-      Error_Handler();
-    }
+	LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_PLL);
+	LL_RCC_SetAHBPrescaler(LL_RCC_SYSCLK_DIV_2);
+	/* Wait till System clock is ready */
+	while (LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_PLL)
+	{
+	}
 
-  /** Initializes the CPU, AHB and APB buses clocks
-   */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK
-      | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+	/* Insure 1us transition state at intermediate medium speed clock*/
+	for (__IO uint32_t i = (170 >> 1); i != 0; i--)
+		;
 
-  if(HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_4) != HAL_OK)
-    {
-      Error_Handler();
-    }
+	/* Set AHB prescaler*/
+	LL_RCC_SetAHBPrescaler(LL_RCC_SYSCLK_DIV_1);
+	LL_RCC_SetAPB1Prescaler(LL_RCC_APB1_DIV_1);
+	LL_RCC_SetAPB2Prescaler(LL_RCC_APB2_DIV_1);
+
+	LL_Init1msTick(170000000);
+
+	LL_SetSystemCoreClock(170000000);
 }
 
 /* USER CODE BEGIN 4 */
@@ -171,24 +188,24 @@ void SystemClock_Config(void)
  */
 void Error_Handler(void)
 {
-  /* USER CODE BEGIN Error_Handler_Debug */
-  /* User can add his own implementation to report the HAL error return state */
-  __disable_irq();
-  while(1)
-    {
-      HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-
-      /**
-       * @note NOP is used because HAL_Delay is based on interrupts and does
-       * not work. So in the error state the CPU time does not matter. Led
-       * flashed with approx. 200 Hz.
-       */
-      for(unsigned long i = 0; i < 850000; i++)
+	/* USER CODE BEGIN Error_Handler_Debug */
+	/* User can add his own implementation to report the HAL error return state */
+	__disable_irq();
+	while (1)
 	{
-	  asm("NOP");
+		LL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+
+		/**
+		 * @note NOP is used because LL_mDelay is based on interrupts and does
+		 * not work. So in the error state the CPU time does not matter. Led
+		 * flashed with approx. 200 Hz.
+		 */
+		for (unsigned long i = 0; i < 850000; i++)
+		{
+			asm("NOP");
+		}
 	}
-    }
-  /* USER CODE END Error_Handler_Debug */
+	/* USER CODE END Error_Handler_Debug */
 }
 
 #ifdef  USE_FULL_ASSERT
