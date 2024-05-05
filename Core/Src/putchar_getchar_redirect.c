@@ -44,7 +44,7 @@
  *****************************************************************************/
 PUTCHAR_PROTOTYPE
 {
-	// Wait for transmit empty flag
+	/* Wait for transmit empty flag */
 	while (LL_LPUART_IsActiveFlag_TXE_TXFNF(LPUART1) != 1);
 
 	LL_LPUART_TransmitData8(LPUART1, (uint8_t) ch);
@@ -60,12 +60,12 @@ GETCHAR_PROTOTYPE
 {
 	uint8_t ch = 0;
 
-	// Wait for receive not empty flag
+	/* Wait for receive not empty flag */
 	while (LL_LPUART_IsActiveFlag_RXNE_RXFNE(LPUART1) != 1);
 
 	ch = LL_LPUART_ReceiveData8(LPUART1);
 
-	// Echo received data
+	/* Echo received data */
 	LL_LPUART_TransmitData8(LPUART1, ch);
 
 	return ch;
