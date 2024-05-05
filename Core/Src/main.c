@@ -24,6 +24,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <math.h>
+#include "cordic_math.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -101,21 +103,24 @@ int main(void)
 	/* USER CODE BEGIN WHILE */
 	while (1)
 	{
-		if (LL_GPIO_IsInputPinSet(BTN_GPIO_Port, BTN_Pin))
-		{
-			LL_GPIO_SetOutputPin(LED_GPIO_Port, LED_Pin);
-		}
-		else
-		{
-			printf("Button is pressed...\n");
 
-			LL_GPIO_ResetOutputPin(LED_GPIO_Port, LED_Pin);
-		}
+	printf("w, sinf_c, sinf\n");
 
-		LL_mDelay(10);
-		/* USER CODE END WHILE */
+	for (float w = -3 * M_PI; w <= 3 * M_PI; w += M_PI / 100)
+	{
+		float sinfF = sinf(w);
 
-		/* USER CODE BEGIN 3 */
+		LL_GPIO_ResetOutputPin(LED_GPIO_Port, LED_Pin);
+		float sinf_cF = sinf_c(w);
+		LL_GPIO_SetOutputPin(LED_GPIO_Port, LED_Pin);
+
+		printf("%.9f, %.9f, %.9f\n", w, sinfF, sinf_cF);
+	}
+
+//		LL_mDelay(10);
+	/* USER CODE END WHILE */
+
+	/* USER CODE BEGIN 3 */
 	}
 	/* USER CODE END 3 */
 }
@@ -138,8 +143,7 @@ void SystemClock_Config(void)
 	}
 
 	LL_RCC_HSI_SetCalibTrimming(64);
-	LL_RCC_PLL_ConfigDomain_SYS(LL_RCC_PLLSOURCE_HSI, LL_RCC_PLLM_DIV_4, 85,
-			LL_RCC_PLLR_DIV_2);
+	LL_RCC_PLL_ConfigDomain_SYS(LL_RCC_PLLSOURCE_HSI, LL_RCC_PLLM_DIV_4, 85,LL_RCC_PLLR_DIV_2);
 	LL_RCC_PLL_EnableDomain_SYS();
 	LL_RCC_PLL_Enable();
 	/* Wait till PLL is ready */
